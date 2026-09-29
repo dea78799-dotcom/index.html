@@ -6,6 +6,8 @@
   <title>AI HACK - Script Hub Pro</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Nhúng EmailJS để gửi Email OTP thật -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <style>
     body {
       background-color: #06080d;
@@ -88,7 +90,7 @@
 
   <main class="max-w-7xl mx-auto px-4 space-y-8">
 
-    <!-- Banner -->
+    <!-- Banner (Đã sửa lỗi hiển thị ảnh) -->
     <div class="glass-panel p-6 md:p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 border-cyan-500/20">
       <div class="space-y-4 max-w-xl z-10">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">
@@ -101,8 +103,8 @@
           Tổng hợp đầy đủ Script Blox Fruits, King Legacy, Muscle Legends... Tối ưu Auto Farm, PvP, lấy key siêu nhanh, mượt mà không văng game!
         </p>
       </div>
-      <div class="w-full md:w-1/2 max-w-md rounded-2xl overflow-hidden border border-white/10 shadow-2xl group relative">
-        <img src="https://raw.githubusercontent.com/dea78799-dotcom/Script-lua/main/1000041901.png" alt="AI HACK Banner" class="w-full h-auto object-cover group-hover:scale-105 transition duration-500">
+      <div class="w-full md:w-1/2 max-w-md rounded-2xl overflow-hidden border border-white/10 shadow-2xl group relative bg-black/40 min-h-[200px]">
+        <img id="main-banner-img" src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop&q=80" alt="AI HACK Banner" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800'">
       </div>
     </div>
 
@@ -162,7 +164,7 @@
 
   </main>
 
-  <!-- ================= POPUP AUTHENTICATION (Đăng nhập / Đăng ký / Quên MK) ================= -->
+  <!-- POPUP AUTHENTICATION (Đăng nhập / Đăng ký / Quên MK) -->
   <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="glass-panel w-full max-w-md p-6 space-y-5 relative border-cyan-500/30">
       <button onclick="closeModal('auth-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -215,7 +217,7 @@
             <button onclick="switchAuthTab('login')" class="text-cyan-400 hover:underline">Đã có tài khoản? Đăng nhập</button>
           </div>
           <button onclick="sendRegisterOTP()" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 font-bold text-white hover:opacity-90 transition mt-2">
-            Tiếp Theo (Nhận Mã OTP 6 Số)
+            Tiếp Theo (Gửi Mã OTP 6 Số Qua Email)
           </button>
         </div>
       </div>
@@ -292,7 +294,7 @@
     </div>
   </div>
 
-  <!-- Popup Thêm/Sửa Script (Dành cho Admin/Tài khoản) -->
+  <!-- Popup Thêm/Sửa Script -->
   <div id="add-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="glass-panel w-full max-w-md p-6 space-y-4 relative border-purple-500/30">
       <button onclick="closeModal('add-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
@@ -322,6 +324,16 @@
   </div>
 
   <script>
+    // CẤU HÌNH EMAILJS (Thay bằng mã của bạn nếu có)
+    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
+    const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
+
+    // Khởi tạo EmailJS
+    if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    }
+
     const ADMIN_EMAIL = "dea78799@gmail.com";
 
     // Khởi tạo danh sách Script
@@ -344,7 +356,6 @@
       }
     ];
 
-    // Dữ liệu User lưu trên LocalStorage
     let users = JSON.parse(localStorage.getItem('aihack_users')) || {};
     let currentUser = localStorage.getItem('aihack_current_user') || null;
 
@@ -353,7 +364,6 @@
     let pendingRegisterData = null;
     let pendingResetEmail = "";
 
-    // Tự động khôi phục phiên làm việc
     if (currentUser) {
       updateUserUI();
     }
@@ -375,7 +385,25 @@
       document.getElementById(id).classList.add('hidden');
     }
 
-    // --- CHỨC NĂNG ĐĂNG KÝ & OTP ---
+    // --- HÀM GỬI EMAIL OTP THỰC TẾ / THÔNG BÁO ---
+    function sendRealEmail(toEmail, otpCode) {
+      if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          to_email: toEmail,
+          otp_code: otpCode,
+          from_name: "AI HACK Script Hub"
+        }).then(() => {
+          alert(`Mã OTP đã được gửi thành công đến email: ${toEmail}`);
+        }).catch((err) => {
+          console.error("Lỗi EmailJS:", err);
+          alert(`Mã OTP 6 số của bạn là: ${otpCode}`);
+        });
+      } else {
+        alert(`[THÔNG BÁO MÃ OTP] Mã xác nhận 6 số gửi về ${toEmail} là: ${otpCode}`);
+      }
+    }
+
+    // --- CHỨC NĂNG ĐĂNG KÝ ---
     function sendRegisterOTP() {
       const email = document.getElementById('reg-email').value.trim();
       const pass = document.getElementById('reg-pass').value;
@@ -401,13 +429,11 @@
         return;
       }
 
-      // Tạo mã OTP 6 số ngẫu nhiên
       generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
       pendingRegisterData = { email, pass };
 
-      // Giả lập gửi Email (Trong thực tế thông báo mã OTP gửi về)
       document.getElementById('otp-target-email').innerText = email;
-      alert(`[MÔ PHỎNG EMAIL] Mã xác nhận OTP 6 số của bạn là: ${generatedOTP}\n(Vui lòng nhập mã này ở bước tiếp theo)`);
+      sendRealEmail(email, generatedOTP);
       
       switchAuthTab('otp');
     }
@@ -421,14 +447,12 @@
       }
 
       if (pendingRegisterData) {
-        // Lưu tài khoản mới
         users[pendingRegisterData.email] = {
           password: pendingRegisterData.pass,
           createdAt: new Date().toISOString()
         };
         localStorage.setItem('aihack_users', JSON.stringify(users));
 
-        // Tự động đăng nhập
         currentUser = pendingRegisterData.email;
         localStorage.setItem('aihack_current_user', currentUser);
 
@@ -437,7 +461,6 @@
         updateUserUI();
         pendingRegisterData = null;
       } else if (pendingResetEmail) {
-        // Cho phép đổi mật khẩu mới
         switchAuthTab('reset-pass');
       }
     }
@@ -452,7 +475,6 @@
         return;
       }
 
-      // Kiểm tra admin đặc biệt hoặc user thường
       if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase() && !users[email]) {
         users[email] = { password: pass };
         localStorage.setItem('aihack_users', JSON.stringify(users));
@@ -483,7 +505,7 @@
       pendingRegisterData = null;
 
       document.getElementById('otp-target-email').innerText = email;
-      alert(`[MÔ PHỎNG EMAIL KHÔI PHỤC] Mã OTP khôi phục mật khẩu của bạn là: ${generatedOTP}`);
+      sendRealEmail(email, generatedOTP);
       switchAuthTab('otp');
     }
 
@@ -553,7 +575,7 @@
       grid.innerHTML = filtered.map(s => `
         <div class="glass-card p-5 space-y-4 flex flex-col justify-between">
           <div class="space-y-3">
-            <div class="relative h-44 rounded-xl overflow-hidden border border-white/10 group">
+            <div class="relative h-44 rounded-xl overflow-hidden border border-white/10 group bg-black/40">
               <img src="${s.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500'">
               <span class="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-md text-[10px] font-extrabold bg-purple-600 text-white shadow-lg">
                 ${s.category}
@@ -640,14 +662,12 @@
       }
 
       if (editId) {
-        // Cập nhật Script cũ
         const index = scripts.findIndex(s => s.id === editId);
         if (index !== -1) {
           scripts[index] = { id: editId, gameName: name, gameId: id || 'N/A', category: cat, image: img, code: code };
           alert("Đã cập nhật Script thành công!");
         }
       } else {
-        // Thêm Script mới
         const newScript = {
           id: Date.now().toString(),
           gameName: name,
