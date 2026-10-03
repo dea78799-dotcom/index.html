@@ -1,705 +1,231 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI HACK - Script Hub Pro</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <!-- Nhúng EmailJS để gửi Email OTP thật -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <style>
-    body {
-      background-color: #06080d;
-      color: #e2e8f0;
-      font-family: 'Segoe UI', Roboto, sans-serif;
-      background-image: 
-        radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.12) 0%, transparent 40%),
-        radial-gradient(circle at 90% 90%, rgba(168, 85, 247, 0.12) 0%, transparent 40%);
-      background-attachment: fixed;
-    }
-    .glass-panel {
-      background: rgba(15, 20, 32, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 1.25rem;
-    }
-    .glass-card {
-      background: rgba(21, 27, 43, 0.65);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 1.25rem;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .glass-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(56, 189, 248, 0.4);
-      box-shadow: 0 14px 35px -10px rgba(56, 189, 248, 0.3);
-    }
-    .neon-glow {
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
-    }
-    .text-glow {
-      text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
-    }
-  </style>
-</head>
-<body class="min-h-screen pb-12">
-
-  <!-- Header -->
-  <header class="sticky top-0 z-40 w-full glass-panel !rounded-none border-b border-white/10 px-4 py-3 mb-6 shadow-xl">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center font-extrabold text-lg text-white shadow-lg neon-glow">
-          AI
-        </div>
-        <div>
-          <h1 class="font-black text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500">
-            AI HACK
-          </h1>
-          <p class="text-[10px] text-gray-400 font-medium">Script-AIHACK Hub v2.0</p>
-        </div>
-      </div>
-
-      <!-- Khung Auth Header -->
-      <div id="auth-section" class="flex flex-col items-end">
-        <div id="guest-controls" class="flex items-center gap-2">
-          <button onclick="openAuthModal('login')" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500/20 to-purple-500/20 hover:from-cyan-500/30 hover:to-purple-500/30 text-cyan-300 text-xs font-semibold border border-cyan-500/30 transition">
-            <i class="fas fa-sign-in-alt mr-1"></i> Đăng nhập
-          </button>
-          <button onclick="openAuthModal('register')" class="px-3.5 py-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black text-xs font-bold transition shadow-md">
-            Đăng ký
-          </button>
-        </div>
-
-        <div id="user-badge" class="hidden flex items-center gap-3">
-          <span id="user-display" class="px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center gap-1.5">
-            <i class="fas fa-user-circle"></i> <span id="user-email-text"></span>
-          </span>
-          <button onclick="logout()" class="text-xs text-gray-400 hover:text-red-400 transition underline">Đăng xuất</button>
-        </div>
-
-        <!-- Ghi chú thu hút bên dưới nút -->
-        <p class="text-[10px] text-gray-400 mt-1 italic hidden md:block">
-          💡 Đăng nhập hoặc đăng ký để xem thêm: <span class="text-cyan-400 font-medium">Game mới cập nhật</span>, <span class="text-purple-400 font-medium">Game sắp thêm script</span>...
-        </p>
-      </div>
-    </div>
-  </header>
-
-  <main class="max-w-7xl mx-auto px-4 space-y-8">
-
-    <!-- Banner (Đã sửa lỗi hiển thị ảnh) -->
-    <div class="glass-panel p-6 md:p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 border-cyan-500/20">
-      <div class="space-y-4 max-w-xl z-10">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">
-          <i class="fas fa-bolt text-yellow-400"></i> Trang chia sẻ Script Roblox Chuyên Nghiệp
-        </span>
-        <h2 class="text-3xl md:text-5xl font-black text-white leading-tight">
-          Kho Script <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 text-glow">AI HACK</span>
-        </h2>
-        <p class="text-gray-400 text-sm md:text-base leading-relaxed">
-          Tổng hợp đầy đủ Script Blox Fruits, King Legacy, Muscle Legends... Tối ưu Auto Farm, PvP, lấy key siêu nhanh, mượt mà không văng game!
-        </p>
-      </div>
-      <div class="w-full md:w-1/2 max-w-md rounded-2xl overflow-hidden border border-white/10 shadow-2xl group relative bg-black/40 min-h-[200px]">
-        <img id="main-banner-img" src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop&q=80" alt="AI HACK Banner" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800'">
-      </div>
-    </div>
-
-    <!-- Thông tin độc quyền khi đã đăng nhập -->
-    <div id="exclusive-info" class="hidden glass-panel p-5 border-purple-500/30 bg-purple-950/20">
-      <h3 class="text-md font-bold text-purple-300 flex items-center gap-2 mb-3">
-        <i class="fas fa-star text-yellow-400"></i> Thông Tin Độc Quyền (Dành Cho Thành Viên)
-      </h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-        <div class="p-3 bg-black/40 rounded-xl border border-white/5 space-y-1">
-          <p class="font-bold text-cyan-400">🔥 Game Vừa Cập Nhật Script Mới:</p>
-          <p class="text-gray-300">• Blox Fruits Update 24 - Fix Lag & Auto Farm Candy</p>
-          <p class="text-gray-300">• King Legacy V6 - Auto Sea Beast & Dungeon</p>
-        </div>
-        <div class="p-3 bg-black/40 rounded-xl border border-white/5 space-y-1">
-          <p class="font-bold text-purple-400">⏳ Game Sắp Thêm Script Trong Tuần:</p>
-          <p class="text-gray-300">• Fisch (Auto Catch Fish & Instant Reel)</p>
-          <p class="text-gray-300">• Anime Vanguards (Auto Play Story & Infinite)</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tìm kiếm & Bộ lọc -->
-    <div class="glass-panel p-4 md:p-6 space-y-4">
-      <div class="flex flex-col md:flex-row gap-4">
-        <div class="relative flex-1">
-          <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-          <input type="text" id="search-input" oninput="filterScripts()" placeholder="Nhập tên game hoặc ID game để tìm script..." class="w-full pl-11 pr-4 py-3 rounded-xl bg-black/50 border border-white/10 focus:border-cyan-500 focus:outline-none text-sm text-white placeholder-gray-500 transition">
-        </div>
-        
-        <button id="btn-add-script" onclick="openAddModal()" class="hidden px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition">
-          <i class="fas fa-plus-circle"></i> Thêm Script Mới
-        </button>
-      </div>
-
-      <!-- Tag thể loại -->
-      <div class="flex flex-wrap gap-2 pt-1">
-        <button onclick="setCategory('all', this)" class="cat-btn active px-4 py-2 rounded-xl text-xs font-bold bg-cyan-500 text-black shadow">Tất cả</button>
-        <button onclick="setCategory('HOT', this)" class="cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 border border-white/10">🔥 HOT</button>
-        <button onclick="setCategory('PvP', this)" class="cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 border border-white/10">⚔️ PvP</button>
-        <button onclick="setCategory('Farm', this)" class="cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 border border-white/10">🌾 Auto Farm</button>
-        <button onclick="setCategory('Hub', this)" class="cat-btn px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 border border-white/10">🚀 Hub</button>
-      </div>
-    </div>
-
-    <!-- Danh sách Script Tổng hợp -->
-    <section class="space-y-4">
-      <div class="flex items-center justify-between">
-        <h3 class="text-xl font-extrabold flex items-center gap-2 text-white">
-          <i class="fas fa-code text-cyan-400"></i> Danh Sách Script Game
-        </h3>
-        <span id="script-count" class="text-xs text-gray-400 font-medium">Đang tải...</span>
-      </div>
-
-      <div id="script-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    </section>
-
-  </main>
-
-  <!-- POPUP AUTHENTICATION (Đăng nhập / Đăng ký / Quên MK) -->
-  <div id="auth-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-panel w-full max-w-md p-6 space-y-5 relative border-cyan-500/30">
-      <button onclick="closeModal('auth-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-        <i class="fas fa-times text-xl"></i>
-      </button>
-
-      <!-- TAB ĐĂNG NHẬP -->
-      <div id="form-login" class="space-y-4">
-        <h3 class="text-xl font-black text-cyan-400 flex items-center gap-2">
-          <i class="fas fa-sign-in-alt"></i> Đăng Nhập
-        </h3>
-        <div class="space-y-3 text-xs">
-          <div>
-            <label class="block text-gray-400 mb-1">Email của bạn:</label>
-            <input type="email" id="login-email" placeholder="nhapemail@gmail.com" class="w-full p-3 rounded-xl bg-black/60 border border-white/10 text-white focus:outline-none focus:border-cyan-500">
-          </div>
-          <div>
-            <label class="block text-gray-400 mb-1">Mật khẩu:</label>
-            <input type="password" id="login-pass" placeholder="••••••••" class="w-full p-3 rounded-xl bg-black/60 border border-white/10 text-white focus:outline-none focus:border-cyan-500">
-          </div>
-          <div class="flex justify-between items-center pt-1">
-            <button onclick="switchAuthTab('forgot')" class="text-cyan-400 hover:underline">Quên mật khẩu?</button>
-            <button onclick="switchAuthTab('register')" class="text-purple-400 hover:underline font-semibold">Chưa có tài khoản? Đăng ký</button>
-          </div>
-          <button onclick="handleLogin()" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 font-bold text-black hover:opacity-90 transition mt-2">
-            Đăng Nhập
-          </button>
-        </div>
-      </div>
-
-      <!-- TAB ĐĂNG KÝ -->
-      <div id="form-register" class="space-y-4 hidden">
-        <h3 class="text-xl font-black text-purple-400 flex items-center gap-2">
-          <i class="fas fa-user-plus"></i> Đăng Ký Tài Khoản
-        </h3>
-        <div class="space-y-3 text-xs">
-          <div>
-            <label class="block text-gray-400 mb-1">1. Nhập Email của bạn:</label>
-            <input type="email" id="reg-email" placeholder="example@gmail.com" class="w-full p-3 rounded-xl bg-black/60 border border-white/10 text-white focus:outline-none focus:border-purple-500">
-          </div>
-          <div>
-            <label class="block text-gray-400 mb-1">2. Mật khẩu (từ 8 số/ký tự trở lên):</label>
-            <input type="password" id="reg-pass" placeholder="Tối thiểu 8 ký tự" class="w-full p-3 rounded-xl bg-black/60 border border-white/10 text-white focus:outline-none focus:border-purple-500">
-          </div>
-          <div>
-            <label class="block text-gray-400 mb-1">3. Nhập lại mật khẩu:</label>
-            <input type="password" id="reg-pass-confirm" placeholder="Nhập lại mật khẩu ở trên" class="w-full p-3 rounded-xl bg-black/60 border border-white/10 text-white focus:outline-none focus:border-purple-500">
-          </div>
-          <div class="text-right">
-            <button onclick="switchAuthTab('login')" class="text-cyan-400 hover:underline">Đã có tài khoản? Đăng nhập</button>
-          </div>
-          <button onclick="sendRegisterOTP()" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 font-bold text-white hover:opacity-90 transition mt-2">
-            Tiếp Theo (Gửi Mã OTP 6 Số Qua Email)
-          </button>
-        </div>
-      </div>
-
-      <!-- TAB XÁC NHẬN OTP -->
-      <div id="form-otp" class="space-y-4 hidden">
-        <h3 class="text-xl font-black text-yellow-400 flex items-center gap-2">
-          <i class="fas fa-shield-alt"></i> Xác Nhận Mã OTP
-        </h3>
-        <p class="text-xs text-gray-300 leading-relaxed">
-          Mã OTP gồm <b class="text-cyan-400">6 chữ số</b> đã được gửi tới email <b id="otp-target-email" class="text-yellow-300"></b>. Vui lòng kiểm tra hộp thư (hoặc mục Thư rác/Spam).
-        </p>
-        <div class="space-y-3 text-xs">
-          <input type="text" id="otp-input" maxlength="6" placeholder="Nhập 6 số OTP (ví dụ: 123456)" class="w-full p-3 rounded-xl bg-black/60 border border-white/10 text-center font-mono text-lg text-cyan-300 tracking-widest focus:outline-none focus:border-yellow-500">
-          <button onclick="verifyOTPAndFinish()" class="w-full py-3 rounded-xl bg-gradient-to-r from-yellow-500 to-amber-600 font-bold text-black hover:opacity-90 transition">
-            Xác Nhận & Hoàn Tất
-          </button>
-        </div>
-      </div>
-
-      <!-- TAB QUÊN MẬT KHẨU -->
-      <div id="form-forgot" class="space-y-4 hidden">
-        <h3 class="text-xl font-black text-pink-400 flex items-center gap-2">
-          <i class="fas fa-key"></i> Khôi Phục Mật Khẩu
-        </h3>
-        <div class="space-y-3 text-xs">
-          <div>
-            <label class="block text-gray-400 mb-1">Nhập Email đã đăng ký:</label>
-            <input type="email" id="forgot-email" placeholder="nhapemail@gmail.com" class="w-full p-3 rounded-xl bg-black/60 border border-white/10 text-white focus:outline-none focus:border-pink-500">
-          </div>
-          <div class="flex justify-between">
-            <button onclick="switchAuthTab('login')" class="text-gray-400 hover:underline">Quay lại đăng nhập</button>
-          </div>
-          <button onclick="sendForgotOTP()" class="w-full py-3 rounded-xl bg-gradient-to-r from-pink-500 to-rose-600 font-bold text-white hover:opacity-90 transition">
-            Gửi Mã Khôi Phục 6 Số
-          </button>
-        </div>
-      </div>
-
-      <!-- TAB ĐẶT LẠI MẬT KHẨU MỚI -->
-      <div id="form-reset-pass" class="space-y-4 hidden">
-        <h3 class="text-xl font-black text-green-400 flex items-center gap-2">
-          <i class="fas fa-lock-open"></i> Đặt Mật Khẩu Mới
-        </h3>
-        <div class="space-y-3 text-xs">
-          <div>
-            <label class="block text-gray-400 mb-1">Mật khẩu mới ($\ge 8$ số/ký tự):</label>
-            <input type="password" id="new-pass" placeholder="Tối thiểu 8 ký tự" class="w-full p-3 rounded-xl bg-black/60 border border-white/10 text-white focus:outline-none focus:border-green-500">
-          </div>
-          <button onclick="saveNewPassword()" class="w-full py-3 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 font-bold text-black hover:opacity-90 transition">
-            Lưu Mật Khẩu Mới & Đăng Nhập
-          </button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Popup Xem Script -->
-  <div id="script-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-panel w-full max-w-2xl p-6 space-y-4 relative border-cyan-500/30">
-      <button onclick="closeModal('script-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-        <i class="fas fa-times text-xl"></i>
-      </button>
-      <h3 id="modal-title" class="text-xl font-bold text-cyan-400">Tên Game</h3>
-      <p class="text-xs text-gray-400" id="modal-id">ID Game: N/A</p>
-      
-      <div class="relative">
-        <pre class="bg-black/90 p-4 rounded-xl border border-white/10 text-xs text-cyan-300 overflow-x-auto max-h-60 font-mono" id="modal-code"></pre>
-        <button onclick="copyCode()" class="mt-3 w-full py-2.5 rounded-xl bg-cyan-500 text-black text-xs font-bold hover:bg-cyan-400 transition flex items-center justify-center gap-2">
-          <i class="fas fa-copy"></i> Sao Chép Script
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Popup Thêm/Sửa Script -->
-  <div id="add-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
-    <div class="glass-panel w-full max-w-md p-6 space-y-4 relative border-purple-500/30">
-      <button onclick="closeModal('add-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-        <i class="fas fa-times text-xl"></i>
-      </button>
-      <h3 id="add-modal-title" class="text-xl font-bold text-purple-400"><i class="fas fa-plus-circle"></i> Thêm Script Mới</h3>
-      
-      <input type="hidden" id="edit-script-id" value="">
-      
-      <div class="space-y-3 text-xs">
-        <input type="text" id="add-name" placeholder="Tên Game (ví dụ: Blox Fruits)" class="w-full p-3 rounded-xl bg-black/50 border border-white/10 text-white focus:outline-none focus:border-purple-500">
-        <input type="text" id="add-id" placeholder="ID Game (ví dụ: 2753915549)" class="w-full p-3 rounded-xl bg-black/50 border border-white/10 text-white focus:outline-none focus:border-purple-500">
-        <select id="add-cat" class="w-full p-3 rounded-xl bg-black/50 border border-white/10 text-white focus:outline-none focus:border-purple-500">
-          <option value="HOT">🔥 HOT</option>
-          <option value="PvP">⚔️ PvP</option>
-          <option value="Farm">🌾 Auto Farm</option>
-          <option value="Hub">🚀 Hub</option>
-        </select>
-        <input type="text" id="add-img" placeholder="Link ảnh Game (URL)" class="w-full p-3 rounded-xl bg-black/50 border border-white/10 text-white focus:outline-none focus:border-purple-500">
-        <textarea id="add-code" rows="4" placeholder="Dán mã Script vào đây..." class="w-full p-3 rounded-xl bg-black/50 border border-white/10 text-white focus:outline-none focus:border-purple-500 font-mono"></textarea>
-        
-        <button onclick="saveScript()" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 font-bold text-white hover:opacity-90 transition">
-          Lưu Script
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // CẤU HÌNH EMAILJS (Thay bằng mã của bạn nếu có)
-    const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
-    const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
-    const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-
-    // Khởi tạo EmailJS
-    if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-    }
-
-    const ADMIN_EMAIL = "dea78799@gmail.com";
-
-    // Khởi tạo danh sách Script
-    let scripts = JSON.parse(localStorage.getItem('aihack_scripts')) || [
-      {
-        id: "1",
-        gameName: "Blox Fruits",
-        gameId: "2753915549",
-        category: "HOT",
-        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500",
-        code: `loadstring(game:HttpGet("https://raw.githubusercontent.com/dea78799-dotcom/Script-lua/main/BloxFruits.lua"))()`
-      },
-      {
-        id: "2",
-        gameName: "King Legacy",
-        gameId: "4520749081",
-        category: "PvP",
-        image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=500",
-        code: `loadstring(game:HttpGet("https://raw.githubusercontent.com/dea78799-dotcom/Script-lua/main/KingLegacy.lua"))()`
-      }
-    ];
-
-    let users = JSON.parse(localStorage.getItem('aihack_users')) || {};
-    let currentUser = localStorage.getItem('aihack_current_user') || null;
-
-    let currentCategory = 'all';
-    let generatedOTP = "";
-    let pendingRegisterData = null;
-    let pendingResetEmail = "";
-
-    if (currentUser) {
-      updateUserUI();
-    }
-
-    // --- QUẢN LÝ GIAO DIỆN AUTH ---
-    function openAuthModal(tab) {
-      document.getElementById('auth-modal').classList.remove('hidden');
-      switchAuthTab(tab);
-    }
-
-    function switchAuthTab(tab) {
-      ['login', 'register', 'otp', 'forgot', 'reset-pass'].forEach(t => {
-        document.getElementById(`form-${t}`).classList.add('hidden');
-      });
-      document.getElementById(`form-${tab}`).classList.remove('hidden');
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.add('hidden');
-    }
-
-    // --- HÀM GỬI EMAIL OTP THỰC TẾ / THÔNG BÁO ---
-    function sendRealEmail(toEmail, otpCode) {
-      if (typeof emailjs !== 'undefined' && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY") {
-        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-          to_email: toEmail,
-          otp_code: otpCode,
-          from_name: "AI HACK Script Hub"
-        }).then(() => {
-          alert(`Mã OTP đã được gửi thành công đến email: ${toEmail}`);
-        }).catch((err) => {
-          console.error("Lỗi EmailJS:", err);
-          alert(`Mã OTP 6 số của bạn là: ${otpCode}`);
-        });
-      } else {
-        alert(`[THÔNG BÁO MÃ OTP] Mã xác nhận 6 số gửi về ${toEmail} là: ${otpCode}`);
-      }
-    }
-
-    // --- CHỨC NĂNG ĐĂNG KÝ ---
-    function sendRegisterOTP() {
-      const email = document.getElementById('reg-email').value.trim();
-      const pass = document.getElementById('reg-pass').value;
-      const passConfirm = document.getElementById('reg-pass-confirm').value;
-
-      if (!email || !pass || !passConfirm) {
-        alert("Vui lòng nhập đầy đủ thông tin!");
-        return;
-      }
-
-      if (pass.length < 8) {
-        alert("Mật khẩu phải từ 8 số/ký tự trở lên!");
-        return;
-      }
-
-      if (pass !== passConfirm) {
-        alert("Nhập lại mật khẩu không trùng khớp!");
-        return;
-      }
-
-      if (users[email]) {
-        alert("Email này đã được đăng ký tài khoản!");
-        return;
-      }
-
-      generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
-      pendingRegisterData = { email, pass };
-
-      document.getElementById('otp-target-email').innerText = email;
-      sendRealEmail(email, generatedOTP);
-      
-      switchAuthTab('otp');
-    }
-
-    function verifyOTPAndFinish() {
-      const inputOTP = document.getElementById('otp-input').value.trim();
-
-      if (inputOTP !== generatedOTP) {
-        alert("Mã OTP không chính xác! Vui lòng kiểm tra lại.");
-        return;
-      }
-
-      if (pendingRegisterData) {
-        users[pendingRegisterData.email] = {
-          password: pendingRegisterData.pass,
-          createdAt: new Date().toISOString()
-        };
-        localStorage.setItem('aihack_users', JSON.stringify(users));
-
-        currentUser = pendingRegisterData.email;
-        localStorage.setItem('aihack_current_user', currentUser);
-
-        alert("Tạo tài khoản thành công!");
-        closeModal('auth-modal');
-        updateUserUI();
-        pendingRegisterData = null;
-      } else if (pendingResetEmail) {
-        switchAuthTab('reset-pass');
-      }
-    }
-
-    // --- CHỨC NĂNG ĐĂNG NHẬP ---
-    function handleLogin() {
-      const email = document.getElementById('login-email').value.trim();
-      const pass = document.getElementById('login-pass').value;
-
-      if (!email || !pass) {
-        alert("Vui lòng nhập Email và Mật khẩu!");
-        return;
-      }
-
-      if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase() && !users[email]) {
-        users[email] = { password: pass };
-        localStorage.setItem('aihack_users', JSON.stringify(users));
-      }
-
-      if (users[email] && users[email].password === pass) {
-        currentUser = email;
-        localStorage.setItem('aihack_current_user', currentUser);
-        alert("Đăng nhập thành công!");
-        closeModal('auth-modal');
-        updateUserUI();
-      } else {
-        alert("Sai email hoặc mật khẩu!");
-      }
-    }
-
-    // --- CHỨC NĂNG QUÊN MẬT KHẨU ---
-    function sendForgotOTP() {
-      const email = document.getElementById('forgot-email').value.trim();
-
-      if (!email || !users[email]) {
-        alert("Email này chưa đăng ký tài khoản!");
-        return;
-      }
-
-      generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
-      pendingResetEmail = email;
-      pendingRegisterData = null;
-
-      document.getElementById('otp-target-email').innerText = email;
-      sendRealEmail(email, generatedOTP);
-      switchAuthTab('otp');
-    }
-
-    function saveNewPassword() {
-      const newPass = document.getElementById('new-pass').value;
-
-      if (newPass.length < 8) {
-        alert("Mật khẩu mới phải từ 8 ký tự trở lên!");
-        return;
-      }
-
-      if (pendingResetEmail && users[pendingResetEmail]) {
-        users[pendingResetEmail].password = newPass;
-        localStorage.setItem('aihack_users', JSON.stringify(users));
-
-        currentUser = pendingResetEmail;
-        localStorage.setItem('aihack_current_user', currentUser);
-
-        alert("Đã cập nhật mật khẩu mới thành công!");
-        closeModal('auth-modal');
-        updateUserUI();
-        pendingResetEmail = "";
-      }
-    }
-
-    function logout() {
-      currentUser = null;
-      localStorage.removeItem('aihack_current_user');
-      updateUserUI();
-      alert("Đã đăng xuất!");
-    }
-
-    function updateUserUI() {
-      const isAdmin = currentUser && currentUser.toLowerCase() === ADMIN_EMAIL.toLowerCase();
-
-      if (currentUser) {
-        document.getElementById('guest-controls').classList.add('hidden');
-        document.getElementById('user-badge').classList.remove('hidden');
-        document.getElementById('user-email-text').innerText = isAdmin ? `Admin: ${currentUser}` : currentUser;
-        document.getElementById('exclusive-info').classList.remove('hidden');
-        document.getElementById('btn-add-script').classList.remove('hidden');
-      } else {
-        document.getElementById('guest-controls').classList.remove('hidden');
-        document.getElementById('user-badge').classList.add('hidden');
-        document.getElementById('exclusive-info').classList.add('hidden');
-        document.getElementById('btn-add-script').classList.add('hidden');
-      }
-
-      renderScripts();
-    }
-
-    // --- QUẢN LÝ SCRIPT (THÊM / SỬA / XÓA) ---
-    function renderScripts() {
-      const grid = document.getElementById('script-grid');
-      const search = document.getElementById('search-input').value.toLowerCase();
-      
-      let filtered = scripts.filter(s => {
-        const matchSearch = s.gameName.toLowerCase().includes(search) || s.gameId.includes(search);
-        const matchCat = currentCategory === 'all' || s.category === currentCategory;
-        return matchSearch && matchCat;
-      });
-
-      document.getElementById('script-count').innerText = `Hiển thị ${filtered.length} script`;
-
-      const canEdit = !!currentUser;
-
-      grid.innerHTML = filtered.map(s => `
-        <div class="glass-card p-5 space-y-4 flex flex-col justify-between">
-          <div class="space-y-3">
-            <div class="relative h-44 rounded-xl overflow-hidden border border-white/10 group bg-black/40">
-              <img src="${s.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500'">
-              <span class="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-md text-[10px] font-extrabold bg-purple-600 text-white shadow-lg">
-                ${s.category}
-              </span>
-            </div>
-            <div>
-              <h4 class="font-bold text-lg text-white group-hover:text-cyan-400 transition">${s.gameName}</h4>
-              <p class="text-xs text-gray-400 mt-0.5">ID Game: <span class="font-mono text-cyan-400 font-semibold">${s.gameId}</span></p>
-            </div>
-          </div>
-          
-          <div class="pt-3 border-t border-white/5 flex items-center justify-between gap-2">
-            <button onclick="openModal('${s.id}')" class="flex-1 py-2.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 text-xs font-bold border border-cyan-500/30 transition flex items-center justify-center gap-2">
-              <i class="fas fa-code"></i> Lấy Script Game
-            </button>
-            ${canEdit ? `
-              <button onclick="editScript('${s.id}')" class="p-2.5 rounded-xl bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/30 border border-yellow-500/30 transition" title="Sửa Script"><i class="fas fa-edit"></i></button>
-              <button onclick="deleteScript('${s.id}')" class="p-2.5 rounded-xl bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/30 transition" title="Xóa Script"><i class="fas fa-trash"></i></button>
-            ` : ''}
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function filterScripts() { renderScripts(); }
-
-    function setCategory(cat, btn) {
-      currentCategory = cat;
-      document.querySelectorAll('.cat-btn').forEach(b => {
-        b.classList.remove('bg-cyan-500', 'text-black', 'shadow');
-        b.classList.add('bg-white/5', 'text-white');
-      });
-      btn.classList.remove('bg-white/5', 'text-white');
-      btn.classList.add('bg-cyan-500', 'text-black', 'shadow');
-      renderScripts();
-    }
-
-    function openModal(id) {
-      const item = scripts.find(s => s.id === id);
-      if(item) {
-        document.getElementById('modal-title').innerText = item.gameName;
-        document.getElementById('modal-id').innerText = `ID Game: ${item.gameId}`;
-        document.getElementById('modal-code').innerText = item.code;
-        document.getElementById('script-modal').classList.remove('hidden');
-      }
-    }
-
-    function openAddModal() {
-      document.getElementById('edit-script-id').value = "";
-      document.getElementById('add-modal-title').innerHTML = `<i class="fas fa-plus-circle"></i> Thêm Script Mới`;
-      document.getElementById('add-name').value = "";
-      document.getElementById('add-id').value = "";
-      document.getElementById('add-img').value = "";
-      document.getElementById('add-code').value = "";
-      document.getElementById('add-modal').classList.remove('hidden');
-    }
-
-    function editScript(id) {
-      const item = scripts.find(s => s.id === id);
-      if(!item) return;
-
-      document.getElementById('edit-script-id').value = item.id;
-      document.getElementById('add-modal-title').innerHTML = `<i class="fas fa-edit"></i> Chỉnh Sửa Script`;
-      document.getElementById('add-name').value = item.gameName;
-      document.getElementById('add-id').value = item.gameId;
-      document.getElementById('add-cat').value = item.category;
-      document.getElementById('add-img').value = item.image;
-      document.getElementById('add-code').value = item.code;
-      
-      document.getElementById('add-modal').classList.remove('hidden');
-    }
-
-    function saveScript() {
-      const editId = document.getElementById('edit-script-id').value;
-      const name = document.getElementById('add-name').value.trim();
-      const id = document.getElementById('add-id').value.trim();
-      const cat = document.getElementById('add-cat').value;
-      const img = document.getElementById('add-img').value.trim() || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500';
-      const code = document.getElementById('add-code').value.trim();
-
-      if (!name || !code) {
-        alert("Vui lòng nhập Tên Game và Mã Script!");
-        return;
-      }
-
-      if (editId) {
-        const index = scripts.findIndex(s => s.id === editId);
-        if (index !== -1) {
-          scripts[index] = { id: editId, gameName: name, gameId: id || 'N/A', category: cat, image: img, code: code };
-          alert("Đã cập nhật Script thành công!");
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alatfera Script - Official Hub</title>
+    <style>
+        :root {
+            --bg-main: #0a0c10;
+            --bg-card: #141824;
+            --accent: #00f2fe;
+            --accent-glow: rgba(0, 242, 254, 0.35);
+            --text-main: #f0f4f8;
+            --text-sub: #8a99ad;
+            --border: #232d3f;
         }
-      } else {
-        const newScript = {
-          id: Date.now().toString(),
-          gameName: name,
-          gameId: id || 'N/A',
-          category: cat,
-          image: img,
-          code: code
-        };
-        scripts.unshift(newScript);
-        alert("Đã thêm Script mới thành công!");
-      }
 
-      localStorage.setItem('aihack_scripts', JSON.stringify(scripts));
-      closeModal('add-modal');
-      renderScripts();
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    function deleteScript(id) {
-      if(confirm("Bạn có chắc muốn xóa script này không?")) {
-        scripts = scripts.filter(s => s.id !== id);
-        localStorage.setItem('aihack_scripts', JSON.stringify(scripts));
-        renderScripts();
-      }
-    }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
 
-    function copyCode() {
-      const code = document.getElementById('modal-code').innerText;
-      navigator.clipboard.writeText(code);
-      alert("Đã sao chép Script thành công!");
-    }
+        /* HEADER THƯƠNG HIỆU */
+        header {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
 
-    renderScripts();
-  </script>
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            filter: drop-shadow(0 0 12px var(--accent-glow));
+        }
+
+        header p {
+            color: var(--text-sub);
+            font-size: 0.95rem;
+            margin-top: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* PHẦN MAIN CHỨA SCRIPT & GAME HỖ TRỢ */
+        main {
+            width: 100%;
+            max-width: 650px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .script-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .script-desc {
+            font-size: 0.88rem;
+            color: var(--text-sub);
+            margin-bottom: 18px;
+        }
+
+        .code-container {
+            background-color: #060709;
+            border: 1px solid #1e2638;
+            border-radius: 10px;
+            padding: 16px;
+            position: relative;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        pre {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .btn-copy {
+            width: 100%;
+            background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(0, 114, 255, 0.3);
+            margin-bottom: 25px;
+        }
+
+        .btn-copy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 114, 255, 0.5);
+        }
+
+        .btn-copy:active {
+            transform: translateY(0);
+        }
+
+        /* GAME SUPPORTED SECTION */
+        .games-section {
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .games-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .games-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .game-tag {
+            background: rgba(0, 242, 254, 0.08);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            color: var(--accent);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .game-tag::before {
+            content: "•";
+            color: var(--accent);
+            font-size: 1.2rem;
+            line-height: 0;
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- THƯƠNG HIỆU Ở ĐẦU -->
+    <header>
+        <h1>ALATFERA SCRIPT</h1>
+        <p>POWER & PRECISION — OFFICIAL HUB</p>
+    </header>
+
+    <!-- PHẦN MAIN CHỨA SCRIPT VÀ CÁC GAME HỖ TRỢ -->
+    <main>
+        <div class="script-title">Alatfera Main Loader</div>
+        <div class="script-desc">Copy đoạn mã dưới đây và dán vào Executor để sử dụng.</div>
+
+        <div class="code-container">
+            <pre id="scriptText">loadstring(game:HttpGet("https://raw.githubusercontent.com/dea78799-dotcom/Thu-g-n/main/README.md"))()</pre>
+        </div>
+
+        <button class="btn-copy" onclick="copyScript()" id="copyBtn">Copy Script</button>
+
+        <!-- DANH SÁCH GAME HỖ TRỢ -->
+        <div class="games-section">
+            <div class="games-title">🎮 Các tựa game được hỗ trợ:</div>
+            <div class="games-list">
+                <span class="game-tag">Nổ 1 khối may mắn</span>
+                <span class="game-tag">Bán chanh</span>
+                <span class="game-tag">Aura</span>
+                <span class="game-tag">Tập béo phì</span>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 ALATFERA SCRIPT. All rights reserved.
+    </footer>
+
+    <script>
+        function copyScript() {
+            const scriptContent = document.getElementById("scriptText").innerText;
+            navigator.clipboard.writeText(scriptContent).then(() => {
+                const btn = document.getElementById("copyBtn");
+                btn.innerText = "Đã Copy Thành Công!";
+                btn.style.background = "linear-gradient(135deg, #11998e 0%, #38ef7d 100%)";
+                
+                setTimeout(() => {
+                    btn.innerText = "Copy Script";
+                    btn.style.background = "linear-gradient(135deg, #00c6ff 0%, #0072ff 100%)";
+                }, 2000);
+            });
+        }
+    </script>
+
 </body>
 </html>
